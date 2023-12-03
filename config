@@ -1,0 +1,130 @@
+font pango:cozette 10
+
+default_border pixel 0
+
+# Start XDG autostart .desktop files using dex. See also
+# https://wiki.archlinux.org/index.php/XDG_Autostart
+exec --no-startup-id dex --autostart --environment i3
+
+# The combination of xss-lock, nm-applet and pactl is a popular choice, so
+# they are included here as an example. Modify as you see fit.
+
+# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
+# screen before suspend. Use loginctl lock-session to lock your screen.
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+
+set $mod Mod1
+
+# use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+bindsym --to-code {
+# start a terminal
+bindsym $mod+Return exec st
+
+# start a browser
+bindsym $mod+b exec firefox
+
+# kill focused window
+bindsym $mod+q kill
+
+# start dmenu (a program launcher)
+bindsym $mod+d exec --no-startup-id dmenu_run
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# move focused window to the other monitor
+bindsym $mod+Shift+a exec $HOME/.config/i3/swap_monitors.sh
+
+# cycle through the two recently used workspaces
+bindsym $mod+Tab workspace back_and_forth
+
+# split in horizontal orientation
+bindsym $mod+h split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused window
+bindsym $mod+f fullscreen toggle
+
+# change window layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# move the currently focused window to the scratchpad
+bindsym $mod+Shift+minus move scratchpad
+
+# Show the next scratchpad window or hide the focused scratchpad window.
+# If there are multiple scratchpad windows, this command cycles through them.
+bindsym $mod+minus scratchpad show
+
+# switch to workspace
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 0
+
+# move focused window to workspace
+bindsym $mod+Shift+1 move window to workspace 1; workspace 1
+bindsym $mod+Shift+2 move window to workspace 2; workspace 2
+bindsym $mod+Shift+3 move window to workspace 3; workspace 3
+bindsym $mod+Shift+4 move window to workspace 4; workspace 4
+bindsym $mod+Shift+5 move window to workspace 5; workspace 5
+bindsym $mod+Shift+6 move window to workspace 6; workspace 6
+bindsym $mod+Shift+7 move window to workspace 7; workspace 7
+bindsym $mod+Shift+8 move window to workspace 8; workspace 8
+bindsym $mod+Shift+9 move window to workspace 9; workspace 9
+bindsym $mod+Shift+0 move window to workspace 0; workspace 0
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec i3-msg exit
+# suspend computer
+bindsym $mod+Shift+s loginctl suspend
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+
+set $t   #00000000
+set $bg  #363739
+set $fg  #babcbf
+set $red #ca5a5a
+set $blu #588bb6
+
+bar {
+	position top
+	
+	colors {
+		statusline         $fg
+		background         $bg
+
+		#       class              border    background text
+		active_workspace   $bg       $bg        $fg
+		focused_workspace  $bg       $bg        $blu
+		urgent_workspace   $red      $red       $fg
+		inactive_workspace $bg       $bg        $t
+        }
+
+	status_command while $HOME/.config/i3/status_bar.sh; do sleep 1; done
+}
